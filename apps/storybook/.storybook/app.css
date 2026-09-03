@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+/* Where Tailwind looks for classes (monorepo): design-system components and stories. */
+@source "../../../packages/ui/src";
+@source "../stories";
+
+/* Maps semantic tokens (from @repo/tokens) into the Tailwind theme.
+   "inline" = use these CSS variables directly (they resolve in the browser).
+   Raw --gray-* values are deliberately not mapped — components use semantics only. */
+@theme inline {
+  /* Surfaces */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Actions */
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-pressed: var(--primary-pressed);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  /* Statuses (soft: surface = tinted background, foreground = text) */
+  --color-success-surface: var(--success-surface);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning-surface: var(--warning-surface);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-destructive-surface: var(--destructive-surface);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-hover: var(--destructive-hover);
+  --color-destructive-pressed: var(--destructive-pressed);
+  --color-destructive-solid-foreground: var(--destructive-solid-foreground);
+  --color-info-surface: var(--info-surface);
+  --color-info-foreground: var(--info-foreground);
+  --color-invalid-border: var(--invalid-border);
+  --color-invalid-ring: var(--invalid-ring);
+
+  /* Geist variable fonts are provided by @fontsource and imported in preview.tsx. */
+  --font-sans: var(--font-family-sans);
+  --font-mono: var(--font-family-mono);
+  --font-weight-normal: var(--font-weight-body-regular);
+  --font-weight-medium: var(--font-weight-body-medium);
+  --font-weight-semibold: var(--font-weight-body-semibold);
+  --text-xs: var(--font-size-label-xs);
+  --text-xs--line-height: var(--line-height-label-xs);
+  --text-sm: var(--font-size-body-sm);
+  --text-sm--line-height: var(--line-height-body-sm);
+  --text-base: var(--font-size-body-md);
+  --text-base--line-height: var(--line-height-body-md);
+  --text-lg: var(--font-size-body-lg);
+  --text-lg--line-height: var(--line-height-body-lg);
+  --text-2xl: var(--font-size-heading-lg);
+  --text-2xl--line-height: var(--line-height-heading-lg);
+  --text-4xl: var(--font-size-display-sm);
+  --text-4xl--line-height: var(--line-height-display-sm);
+  --text-5xl: var(--font-size-display-lg);
+  --text-5xl--line-height: var(--line-height-display-lg);
+  --spacing: var(--spacing-base);
+
+  /* Named radius tokens (rounded-md = Button, rounded-lg = surfaces). */
+  --radius-md: var(--radius-control);
+  --radius-lg: var(--radius-surface);
+
+  /* Elevation scale — resolves to the shadow tokens, not to itself. */
+  --shadow-sm: var(--effect-shadow-sm);
+  --shadow-md: var(--effect-shadow-md);
+  --shadow-lg: var(--effect-shadow-lg);
+}

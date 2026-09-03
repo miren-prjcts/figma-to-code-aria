@@ -1,0 +1,13 @@
+node_modules/
+.pnpm-store/
+dist/
+storybook-static/
+.turbo/
+.next/
+next-env.d.ts
+out/
+test-results/
+playwright-report-visual/
+*.tsbuildinfo
+.DS_Store
+*.log

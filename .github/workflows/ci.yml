@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm format:check
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm test
+      - run: pnpm build
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:e2e
+
+  visual-regression:
+    # Runs on macOS, not the `checks` job's ubuntu-latest: the committed Storybook screenshot
+    # baselines (tests/visual/__screenshots__) are generated on macOS, and Playwright's
+    # toHaveScreenshot() tags snapshots by platform (font hinting/anti-aliasing genuinely differs
+    # between macOS and Linux, so a Linux runner would fail every story on first run, not just on
+    # real regressions). Mirrors figma-to-code's approach deliberately — see docs/VISUAL_REGRESSION.md
+    # for the tradeoff (a pinned Linux Docker image for CI-runner parity is a possible later step,
+    # not done here for simplicity at repo start).
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install chromium
+      - run: pnpm --filter @repo/storybook build-storybook
+      - name: Visual regression (Storybook)
+        run: pnpm test:visual
+      - name: Upload visual diff artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-regression-diffs
+          path: |
+            test-results/
+            playwright-report-visual/
+          retention-days: 14
